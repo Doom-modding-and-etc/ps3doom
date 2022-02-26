@@ -4,7 +4,7 @@ $(error "PSL1GHT must be set in the environment.")
 endif
 
 include $(PSL1GHT)/Makefile.base
-
+# Todo rewrite from scratch this the format is another nowadays
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 SOURCE		:=	source
@@ -19,7 +19,6 @@ ICON0		:=	./ICON0.PNG
 SFOXML		:=	./sfo.xml
 
 CFLAGS		+= -g -O2 -Wall --std=gnu99 -DSNDINTR
-CXXFLAGS	+= -g -O2 -Wall
 
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 
@@ -30,12 +29,10 @@ export BUILDDIR	:=	$(CURDIR)/$(BUILD)
 export DEPSDIR	:=	$(BUILDDIR)
 
 CFILES		:= $(foreach dir,$(SOURCE),$(notdir $(wildcard $(dir)/*.c)))
-CXXFILES	:= $(foreach dir,$(SOURCE),$(notdir $(wildcard $(dir)/*.cpp)))
 SFILES		:= $(foreach dir,$(SOURCE),$(notdir $(wildcard $(dir)/*.S)))
 BINFILES	:= $(foreach dir,$(DATA),$(notdir $(wildcard $(dir)/*.bin)))
 
 export OFILES	:=	$(CFILES:.c=.o) \
-					$(CXXFILES:.cpp=.o) \
 					$(SFILES:.S=.o)
 
 export BINFILES	:=	$(BINFILES:.bin=.bin.h)
