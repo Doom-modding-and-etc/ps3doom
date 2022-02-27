@@ -1,10 +1,11 @@
-.SUFFIXES:
+..SUFFIXES:
 ifeq ($(strip $(PSL1GHT)),)
 $(error "PSL1GHT must be set in the environment.")
 endif
 
-include $(PSL1GHT)/Makefile.base
-# Todo rewrite from scratch this the format is another nowadays
+include $(PSL1GHT)/ppu_rules
+include $(PSL1GHT)/spu_rules
+
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 SOURCE		:=	source
@@ -18,7 +19,10 @@ CONTENTID	:=	UP0001-$(APPID)_00-0000000000000000
 ICON0		:=	./ICON0.PNG
 SFOXML		:=	./sfo.xml
 
-CFLAGS		+= -g -O2 -Wall --std=gnu99 -DSNDINTR
+CFLAGS += -g -O2 -Wall --std=gnu99 -DSNDINTR
+
+export LIBPSL1GHT_INC := -I$(PSL1GHT)/ppu/include/** -I$(PSL1GHT)/ppu/include/simdmath
+export LIBPSL1GHT_LIB := -L$(PSL1GHT)/ppu/lib
 
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 
@@ -50,7 +54,7 @@ clean:
 	@echo Clean...
 	@rm -rf $(BUILD) $(OUTPUT).elf $(OUTPUT).self $(OUTPUT).a $(OUTPUT).pkg
 
-pkg: $(BUILD)
+all: $(BUILD)
 	@echo Creating PKG...
 	@mkdir -p $(BUILD)/pkg
 	@mkdir -p $(BUILD)/pkg/USRDIR
